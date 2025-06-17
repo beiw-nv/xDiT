@@ -72,9 +72,16 @@ class xFuserLongContextAttention(LongContextAttention):
                 raise RuntimeError("Sparse Sage attention does not support ring degree > 1.")
 
         self.attn_processor = attn_processor
-        from xfuser.core.long_ctx_attention.ring import xdit_ring_flash_attn_func
-        self.ring_attn_fn = xdit_ring_flash_attn_func
-
+        from xfuser.core.long_ctx_attention.ring import xdit_ring_flash_attn_func, xdit_ring_flashinfer_attn_func, xdit_ring_torch_attn_func
+        if (attn_type==AttnType.FLASHINFER):
+            self.ring_attn_fn = xdit_ring_flashinfer_attn_func
+        elif (attn_type==AttnType.FA):
+            self.ring_attn_fn = xdit_ring_flash_attn_func
+        elif (attn_type==AttnType.TORCH):
+            self.ring_attn_fn = xdit_ring_torch_attn_func
+        else:
+            raise RuntimeError("Only suppprt FA, FLASHINFER and TORCH")
+        
     @torch.compiler.disable
     def forward(
         self,
