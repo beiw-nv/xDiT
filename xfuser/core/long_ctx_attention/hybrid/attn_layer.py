@@ -75,7 +75,7 @@ class xFuserLongContextAttention(LongContextAttention):
         from xfuser.core.long_ctx_attention.ring import xdit_ring_flash_attn_func, xdit_ring_flashinfer_attn_func, xdit_ring_torch_attn_func
         if (attn_type==AttnType.FLASHINFER):
             self.ring_attn_fn = xdit_ring_flashinfer_attn_func
-        elif (attn_type==AttnType.FA):
+        elif (attn_type==AttnType.FA or attn_type==AttnType.FA_CUTE or attn_type==AttnType.FA3):
             self.ring_attn_fn = xdit_ring_flash_attn_func
         elif (attn_type==AttnType.TORCH):
             self.ring_attn_fn = xdit_ring_torch_attn_func
